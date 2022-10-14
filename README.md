@@ -10,16 +10,16 @@ To spin up a development environment:
 ```shell
 ## Clone this repository, and make it your working directory.
 
-git clone "https://github.com/cmdruid/regtest-workbench.git"
+git clone "https://github.com/cmdruid/workbench.git"
 cd workbench
 
 ## Build all source libraries listed in the build/dockerfile folder.
 ./workbench.sh build
 
-## Launch your workbench environment.
+## Launch a workbench container called "main".
 ./workbench.sh start main
 
-## Launch your workbench environment and run a specific script.
+## Launch a workbench container and run a specific script.
 ## (the default script is "start")
 ./workbench start main --script test
 
