@@ -7,6 +7,7 @@
 
 DEFAULT_DOMAIN="workbench"
 DEFAULT_SCRIPT="start"
+DEFAULT_TAG="master"
 
 DENVPATH=".env"         ## Path to your local .env file.
 WORKPATH="$(pwd)"       ## Absolute path to use for this directory.
@@ -24,12 +25,12 @@ usage() {
   printf "
 Usage: $(basename $0) [ OPTIONS ] TAG
 
-Launch a docker container for bitcoin / lightning development.
+Launch a docker container for development.
 
 Example: $(basename $0) build
-         $(basename $0) start master --miner
-         $(basename $0) start alice --faucet master
-         $(basename $0) start bob --faucet master --channels alice
+         $(basename $0) start main
+         $(basename $0) start alice
+         $(basename $0) start bob --script test
 
 Arguments:
   TAG             Tag name used to identify the container.
@@ -39,28 +40,12 @@ Build Options  |  Parameters  |  Description
   -b, --build                    Build a new dockerfile image, using existing cache.
   -r, --rebuild                  Delete the existing cache, and build a new image from source.
   -i, --devmode                  Start container in devmode (mounts ./run, does not start entrypoint).
-  -H, --headless                 Start container in headless mode (does not connect to terminal at start).
   -w, --wipe                     Delete the existing data volume, and create a new volume.
-  -m, --miner                    Configure this as a mining node (generates blocks and clears mempool).
-  -m, --miner=    POLL,INT,FUZZ  Provide an optional configuration to the mining node.
-  -p, --peers     TAG1,TAG2      List the peer nodes to connect to (for Bitcoin / Lightning nodes).
-  -c, --channels  TAG1,TAG2      List the peer nodes to open channels with (for Lightning nodes).
-  -f, --faucet    TAG            Specify a node to use as a faucet (usually a mining node).
   -d, --domain    STRING         Set the top-level domain name for the container (Default is $DEFAULT_NAME).
-  -r, --rest                     Enable the CL-REST interface for this node.
-  -t, --tor                      Enable the use of Tor and onion services for this node.
-  -l, --local                    When combined with --tor, forces local peering but allows hidden services.
   -M, --mount     INT:EXT        Declare a path to mount within the container. Can be declared multiple times.
   -P, --ports     PORT1,PORT2    List a comma-separated string of ports to open within the container.
   -T, --passthru  STRING         Pass through an argument string to the docker run script.
   -v, --verbose                  Outputs more information into the terminal (useful for debugging).
-
-Spawn Options:
-  NOTE: Spawn is only compatible with the flags below. All flags must precede 'spawn' keyword.
-
-  spawn           STRING         Spawn multiple nodes at once, using optional STRING to specify the name of
-                                 a .conf file in the ./spawn folder. Default file used is 'spawn.conf'.       
-  --no-kill                      If a node in the spawn config is already running, don't kill it.
 
 Other Options:
   Utility commands for managing images and nodes.
@@ -70,17 +55,10 @@ Other Options:
   login           TAG            Login to an existing node that is currently running.
 
 Example Commands:
-  $(basename $0) compile         Example command for pre-compiling all binaries in build/dockerfiles.
+  $(basename $0) build           Example command for pre-compiling all binaries in build/dockerfiles.
   $(basename $0) login alice     Example command for logging into the terminal for alice.
-  $(basename $0) spawn regswarm  Example command for spawning nodes with 'regswarm' domain and default spawn.conf file.
 
 Example Flags:
-  --mine=poll,int,fuzz      Configure your mining node to poll every x seconds for transactions,
-  (e.x --mine=2,60,20)      or mine blocks continuously at an interval (or both!). If you are running
-                            multiple mining nodes, set the fuzz value to add random variation to each
-                            block, or you may get chain splits! All params are denominated in seconds,
-                            setting to zero disables that feature.
-  
   --mount app:/root/app     Declares a path to be mounted within the container. Paths can be relative 
                             or absolute.
 
@@ -88,7 +66,7 @@ Example Flags:
                             also specify a different internal:external destination for each port.
 
 For more information, or if you want to report any bugs / issues, 
-please visit the github page: https://github.com:cmdruid/regtest-workbench
+please visit the github page: https://github.com:cmdruid/workbench
 \n"
 }
 
