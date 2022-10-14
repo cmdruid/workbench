@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+## Terminal script for setting up a shell session.
+
+set -E
+
+###############################################################################
+# Environment
+###############################################################################
+
+IND=`fgc 215 " |"`
+
+###############################################################################
+# Methods
+###############################################################################
+
+dev_greeting() {
+  printf "Now running in developer mode. You can type '$(fgc 220 exit)' to quit this session and terminate the node.\n"
+}
+
+safe_greeting() {
+  printf "Press '$(fgc 220 $ESC_KEYS)' to detatch from the terminal. Your node will continue to run in the background.
+You can re-enter this terminal with the command '$(fgc 220 "./workbench.sh login $HOSTNAME")'.\n\n"
+}
+
+templ banner "Welcome to the shell terminal for $HOSTNAME."
+
+if [ -z "$DEVMODE" ]; then safe_greeting; /bin/bash; else dev_greeting; fi
