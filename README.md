@@ -32,28 +32,6 @@ Dockerfile   # Main build file for the docker container. Feel free to
 README.md    # You are here!
 ```
 
-## How to Setup
-
-Before launcing your project in workbench, you may need to setup the environment.
-
-### /image
-
-The `image` directory defines your container's default filesystem, and is where your main binaries will be stored. The included `clightning` binaries should work, however if you need to replace them, you can use the `build.sh` script and `clightning.dockerfile` located in `build/dockerfiles` to build a custom binary package for your system. Make sure to unpack and store your binaries in `image/usr/bin` or `image/usr/local/bin` so they can be called from the command-line. For more information on how to build Core Lightning from source, see their [github page](https://github.com/ElementsProject/lightning).
-
-### /config
-
-The `config` folder contains configuration files for services running within the container. The default configuration should be fine, however you may wish to adjust some settings (port numbers for example).
-
-### /home
-
-The `home` folder contains the main `entrypoint` and `start` scripts used to start the container. Feel free to tweak these scripts for your own needs!
-
-### Configuring your Container
-
-The `env.sample` file contains additional configurations that you may wish to change for your project. Copy and rename this file to `.env`, then cutomize it to your needs. The file will take effect automatically on startup.
-
-The `compose.yml` and `Dockerfile` are used to configure and setup the container. The default configurations should be fine, however you may wish to change some things. Please see the resource links below for more information on how to customize these files.
-
 **Tips**  
 
 - The `Dockerfile` specifies what packages are installed by default. Modify the `apt install` line to add more packages to your container.
