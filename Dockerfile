@@ -2,26 +2,25 @@ FROM debian:bullseye-slim
 
 ## Define build arguments.
 ARG ROOTHOME='/root/home'
-ARG DATAPATH="/usr/src/app/db"
+ARG DATAPATH="/data"
 
 ## Install dependencies.
 RUN apt-get update && apt-get install -y \
   build-essential pkg-config libssl-dev iproute2 curl \
-  git jq lsof man neovim netcat procps qrencode tmux
+  git jq lsof man neovim netcat procps qrencode tmux unzip
+
+## Install Python
+RUN apt-get install -y python3 python3-pip
+
+## Install Node.
+RUN curl -fsSL https://fnm.vercel.app/install | bash
+RUN . /root/.bashrc && \
+  LATEST=$(fnm list-remote | tail -n 1) \
+  && fnm install $LATEST \
+  && npm install -g npm yarn
 
 ## Install Rust.
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-## Clone and build relay from source, then copy to bin.
-WORKDIR /tmp
-
-RUN git clone https://git.sr.ht/\~gheartsfield/nostr-rs-relay
-
-RUN cd nostr-rs-relay \
-  && . /root/.cargo/env \
-  && cargo build -r \
-  && cp ./target/release/nostr-rs-relay /usr/local/bin \
-  && rm -r /tmp/*
 
 ## Install ngrok.
 RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null 

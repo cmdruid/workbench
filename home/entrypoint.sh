@@ -7,11 +7,10 @@ set -E
 # Environment
 ###############################################################################
 
-CMD="nostr-rs-relay"
+CMD="bash"
+DEFAULT_REMOTE_PORT=8080
 
-DEFAULT_RELAY_PORT=8080
-
-export HOSTFILE="$DATA/hostname"
+export HOSTFILE="$DATA/.hostname"
 export PARAM_FILE="$DATA/.params"
 
 ###############################################################################
@@ -31,7 +30,7 @@ init() {
 ###############################################################################
 
 ## Set defaults.
-[ -z "$RELAY_PORT" ] && RELAY_PORT = DEFAULT_RELAY_PORT
+[ -z "$REMOTE_PORT" ] && REMOTE_PORT=$DEFAULT_REMOTE_PORT
 
 ## Ensure all files are executable.
 for FILE in $PWD/bin/*   ; do chmod a+x $FILE; done
@@ -47,14 +46,13 @@ printf "" > $PARAM_FILE
 init
 
 ## If hostname is not set, use container address as default.
-[ ! -f "$HOSTFILE" ] && printf "https://$(hostname -I | tr -d ' '):$RELAY_PORT" > "$HOSTFILE"
+[ ! -f "$HOSTFILE" ] && printf "https://$(hostname -I | tr -d ' '):$REMOTE_PORT" > "$HOSTFILE"
 
 ## Construct final params string.
-PARAMS="-d $DATA $@"
+PARAMS="$@"
 
 ## Print our params string.
 echo "Executing $CMD with params:"
 for line in $PARAMS; do echo $line; done && echo
 
-## Start process.
-RUST_LOG=debug,nostr_rs_relay=info $CMD $PARAMS
+$CMD

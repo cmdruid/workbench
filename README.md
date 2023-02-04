@@ -1,6 +1,6 @@
-# Nostr Workbench
+# Workbench
 
-A docker workbench environment, pre-configured for running a nostr relay using nostr-rs-relay (rust).
+A docker workbench container, pre-configured with environments for NodeJs, Python and Rust.
 
 ## Overview
 
@@ -62,14 +62,15 @@ docker compose run -it --entrypoint bash <container name>
 
 ### Ngrok Integration
 
-Setting `NGROK_ENABLED=1` in your `.env` file will enable Ngrok integration. This will configure your `spark-qr` command to connect using an encrypted Ngrok tunnel. You will have to sign up [here](https://ngrok.com) in order to receive an `NGROK_TOKEN` and use their service.
+Setting `NGROK_ENABLED=1` in your `.env` file will enable Ngrok integration. This will configure your container to setup an encrypted Ngrok tunnel. You will have to sign up [here](https://ngrok.com) in order to receive an `NGROK_TOKEN` and use their service.
+
+### Tor Integration
+
+Setting `TOR_ENABLED=1` in your `.env` file will enable Tor integration. This will configure your container to setup a Tor Hidden Services node. You will have to configure a `torrc` file and place it in `/config`. Also, make sure your hidden services are stored in `/data` for persistence.
 
 ## Resources
 
 For more information and resources, please see the links below.
-
-**Nostr-rs-relay**  
-https://sr.ht/~gheartsfield/nostr-rs-relay
 
 **Docker Compose Reference**  
 https://docs.docker.com/compose/compose-file

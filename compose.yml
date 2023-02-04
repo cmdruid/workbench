@@ -1,24 +1,24 @@
 version: '3'
 
 services:
-  sauron-cln:
+  workbench:
     build: .
-    image: nostr-relay:latest
-    container_name: nostr-relay
-    hostname: nostr-relay
+    image: workbench:latest
+    container_name: workbench
+    hostname: workbench
     env_file: .env
     init: true
-    networks:
-      - net
-    ports:
-      - 8080:8080
+    # networks:
+    #   - net
+    # ports:
+    #   - 8080:8080
     restart: unless-stopped
     tty: true
     volumes:
-      - ./config/config.toml:/usr/src/app/config.toml:ro
-      - ./data:/usr/src/app/db:rw
+      - ./config:/config:ro
+      - ./data:/data:rw
       - ./home:/root/home:rw
 
-networks:
-  net:
-    name: 'nostr'
+# networks:
+#   net:
+#     name: 'workbench'
