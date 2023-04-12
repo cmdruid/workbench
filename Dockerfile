@@ -27,6 +27,27 @@ RUN curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | tee /etc/apt/truste
 RUN echo "deb https://ngrok-agent.s3.amazonaws.com bullseye main" | tee /etc/apt/sources.list.d/ngrok.list 
 RUN apt update && apt install ngrok
 
+## Copy over binaries.
+COPY build/out /tmp/bin/
+
+WORKDIR /tmp/bin
+
+## Unpack and/or install binaries.
+RUN for file in *; do \
+  if [ -n "$(echo $file | grep .tar.)" ]; then \
+    echo "Unpacking $file to /usr/local ..." \
+    && tar --wildcards --strip-components=1 -C /usr/local -xf $file \
+  ; else \
+    echo "Moving $file to /usr/local/bin ..." \
+    && chmod +x $file && mv $file /usr/local/bin \
+  ; fi \
+; done
+
+RUN ls /usr
+
+## Clean up temporary files.
+RUN rm -rf /tmp/* /var/tmp/*
+
 ## Uncomment this if you want to install additional packages.
 #RUN apt-get install -y <packages>
 

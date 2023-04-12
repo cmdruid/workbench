@@ -35,7 +35,7 @@ if [ -n "$TOR_ENABLED" ]; then
   done
 
   ## Add proxy command to cln config string.
-  printf "$PARAMS --proxy=127.0.0.1:9050" > "$PARAM_FILE"
+  ## ARGS_STR="$ARGS_STR --proxy=127.0.0.1:9050"
 
   ## Add hostname
   printf "http://$(cat $DATA/hidden/hostname):$SPARK_PORT" > "$SPARK_HOST"

@@ -1,3 +1,3 @@
-data
-.env
 build/out/*
+data/*
+.env

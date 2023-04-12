@@ -30,8 +30,6 @@ CookieAuthFileGroupReadable 1
 CookieAuthFile /var/lib/tor/cookie
 
 ## Hidden Service
-HiddenServiceDir /root/.lightning/hidden
+HiddenServiceDir $DATA/tor/service
 HiddenServiceVersion 3
 HiddenServicePort 2345  127.0.0.1:22
-HiddenServicePort 9737  127.0.0.1:9737
-HiddenServicePort 19735 127.0.0.1:19735
