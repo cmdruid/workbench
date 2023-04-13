@@ -2,7 +2,8 @@
 ## This file is loaded upon login.
 ## Feel free to customize it as you wish!
 
-SPACEUSE="$(du -ahm --max-depth=1 / 2> /dev/null | sort -nr | head -n 5 )"
+SPACEUSE="$(du -ah --max-depth=1 -BM / 2> /dev/null | sort -nr | head -n 5 )"
+ETH0ADDR="$(ip addr show eth0 | grep -w inet | awk '{print $2}' | cut -d/ -f1)"
 NCLISTEN="$(lsof -i -P -n | grep LISTEN)"
 TMUXSESS="$(tmux ls 2> /dev/null)"
 
@@ -10,7 +11,7 @@ display() {
   [ -n "$1" ] && printf "$1\n" || printf "Nothing to display.\n"
 }
 
-templ banner "Network Connections" && display "$NCLISTEN" 2> /dev/null
+templ banner "Network Connections [ $ETH0ADDR ]" && display "$NCLISTEN" 2> /dev/null
 templ banner "File Storage" && display "$SPACEUSE" 
 templ banner "Tmux Sessions" && display "$TMUXSESS" 2> /dev/null
 templ banner "$(date)"

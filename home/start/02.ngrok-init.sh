@@ -7,16 +7,16 @@ set -E
 # Environment
 ###############################################################################
 
-[ -z "$NGROK_TYPE" ]  && NGROK_TYPE  = 'http'
-[ -z "$NGROK_PROTO" ] && NGROK_PROTO = 'http'
-[ -z "$NGROK_HOST" ]  && NGROK_HOST  = '127.0.0.1'
-[ -z "$NGROK_PORT" ]  && NGROK_PORT  = '80'
+[ -z "$NGROK_TYPE" ]  && NGROK_TYPE='http'
+[ -z "$NGROK_PROTO" ] && NGROK_PROTO='http'
+[ -z "$NGROK_HOST" ]  && NGROK_HOST='127.0.0.1'
+[ -z "$NGROK_PORT" ]  && NGROK_PORT='80'
 
 ###############################################################################
 # Main
 ###############################################################################
 
-if [ -n "$NGROK_ENABLED" ] && [ -n "$NGROK_TOKEN" ]; then
+if [ "$NGROK_ENABLED" = 1 ] && [ -n "$NGROK_TOKEN" ]; then
 
   echo "Initializing Ngrok"
 

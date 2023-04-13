@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 ## Entrypoint Script
 
 set -E
@@ -7,12 +7,22 @@ set -E
 # Environment
 ###############################################################################
 
-CMD="bash"
-
-export DATA="/data"
-export ARGS="$@"
+## Configure our default files.
 export HOSTFILE="$DATA/.hostname"
 export ARGSFILE="$DATA/.args"
+export WORKPATH="$HOME/home"
+
+## Ensure our environment is properly initialized.
+! test -d "$DATA"     && mkdir -p $DATA
+! test -d "$CONF"     && mkdir -p $CONF
+! test -d "$LOGS"     && mkdir -p $LOGS
+! test -f "$HOSTFILE" && touch $HOSTFILE
+! test -f "$ARGSFILE" && touch $ARGSFILE
+
+## Configure start command and arguments.
+ARGS="$@"
+[ -z "$CMD" ]  && CMD="tail"
+[ -z "$ARGS" ] && ARGS="-f /dev/null"
 
 ###############################################################################
 # Methods

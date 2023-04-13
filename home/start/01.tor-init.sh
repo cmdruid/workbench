@@ -7,7 +7,7 @@ set -E
 # Environment
 ###############################################################################
 
-CONF_FILE="/config/torrc"
+CONF_FILE="$CONF/torrc"
 LOGS_PATH="/var/log/tor"
 COOK_PATH="/var/lib/tor"
 
@@ -15,9 +15,7 @@ COOK_PATH="/var/lib/tor"
 # Script
 ###############################################################################
 
-PARAMS="$(cat $PARAM_FILE)"
-
-if [ -n "$TOR_ENABLED" ]; then
+if [ "$TOR_ENABLED" = 1 ]; then
 
   echo "Initializing Tor"
 
@@ -38,6 +36,6 @@ if [ -n "$TOR_ENABLED" ]; then
   ## ARGS_STR="$ARGS_STR --proxy=127.0.0.1:9050"
 
   ## Add hostname
-  printf "http://$(cat $DATA/hidden/hostname):$SPARK_PORT" > "$SPARK_HOST"
+  ## printf "http://$(cat $DATA/hidden/hostname):$SPARK_PORT" > "$SPARK_HOST"
 
 fi
